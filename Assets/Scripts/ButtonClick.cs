@@ -1,0 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class ButtonClick : MonoBehaviour
+{
+    [SerializeField] GameObject storyPanel;
+    public void OpenStoryPanel()
+    {
+        storyPanel.SetActive(true);
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadSceneAsync("Main Game", LoadSceneMode.Single);
+    }
+}
