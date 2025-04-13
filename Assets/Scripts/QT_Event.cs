@@ -116,7 +116,7 @@ public class QT_Event : MonoBehaviour
 
     IEnumerator WaitBeforeDisappear()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 144; i++)
         {
             ActivateRandomly();
             isInputActive = true;
@@ -124,6 +124,10 @@ public class QT_Event : MonoBehaviour
             yield return new WaitForSeconds(speed);
             fillAmount = 1;
         }
+        buttons[0].SetActive(false);
+        buttons[1].SetActive(false);
+        buttons[2].SetActive(false);
+        buttons[3].SetActive(false);
         Debug.Log($"total score is: {(int)totalScore}");
     }
 }
