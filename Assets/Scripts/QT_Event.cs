@@ -22,6 +22,8 @@ public class QT_Event : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreInPanel;
 
     [SerializeField] GameObject[] stars;
+    [SerializeField] ParticleSystem particleSystemForSuccess;
+    float randomX, randomY;
 
     void Start()
     {
@@ -57,6 +59,10 @@ public class QT_Event : MonoBehaviour
                 }
                 else if (buttons[randomNumber].activeInHierarchy == true && ((randomNumber == 0 && Input.GetKeyDown("1")) || (randomNumber == 1 && Input.GetKeyDown("2")) || (randomNumber == 2 && Input.GetKeyDown("3")) || (randomNumber == 3 && Input.GetKeyDown("4"))))
                 {
+                    // buttons[randomNumber].GetComponent<ParticleSystem>().Play();
+                    particleSystemForSuccess.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX, randomY);
+                    particleSystemForSuccess.Play();
+
                     totalScore += fillAmount * 100;
                     scoreText.text = ((int)totalScore).ToString();
 
@@ -118,10 +124,11 @@ public class QT_Event : MonoBehaviour
         RectTransform buttonWindowRect = buttonWindow.GetComponent<RectTransform>();
         RectTransform buttonRect = buttons[randomNumber].GetComponent<RectTransform>();
 
-        float randomX = Random.Range(buttonWindowRect.rect.min.x, buttonWindowRect.rect.max.x);
-        float randomY = Random.Range(buttonWindowRect.rect.min.y, buttonWindowRect.rect.max.y);
+        randomX = Random.Range(buttonWindowRect.rect.min.x, buttonWindowRect.rect.max.x);
+        randomY = Random.Range(buttonWindowRect.rect.min.y, buttonWindowRect.rect.max.y);
 
         buttonRect.anchoredPosition = new Vector2(randomX, randomY);
+
     }
 
     IEnumerator WaitBeforeDisappear()
@@ -162,7 +169,7 @@ public class QT_Event : MonoBehaviour
             stars[2].SetActive(true);
         }
 
-            Debug.Log($"total score is: {(int)totalScore}");
+        Debug.Log($"total score is: {(int)totalScore}");
 
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Chords : MonoBehaviour
 {
-    private AudioSource audioSource;
+    [SerializeField] AudioSource audioSource;
     float duration1 = 10.3f;     // 9.5 iyi
     float duration2 = 1.98f;    // 1.96 fena değil
     [SerializeField] GameObject[] chords;
@@ -20,7 +20,7 @@ public class Chords : MonoBehaviour
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
     }
     void Start()
     {
@@ -28,7 +28,7 @@ public class Chords : MonoBehaviour
     }
     IEnumerator PlayStarlight()
     {
-        audioSource.Play();
+        // audioSource.Play();
         chords[0].SetActive(true);  // B
         yield return new WaitForSeconds(duration1);
 
