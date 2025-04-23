@@ -11,6 +11,6 @@ public class ButtonClick : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadSceneAsync("Main Game", LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync("Main Game");
     }
 }

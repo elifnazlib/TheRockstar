@@ -24,6 +24,12 @@ public class QT_Event : MonoBehaviour
     [SerializeField] GameObject[] stars;
     [SerializeField] ParticleSystem particleSystemForSuccess;
     float randomX, randomY;
+    private float totalNotes = 144f;
+    private int numOfCorrectClicks = 0;
+    private float successRate = 0;
+    [SerializeField] TextMeshProUGUI successRateText;
+
+    [SerializeField] TextMeshProUGUI buttonScoreText;
 
     void Start()
     {
@@ -39,26 +45,31 @@ public class QT_Event : MonoBehaviour
             {
                 if ((randomNumber == 0) && (Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4")))
                 {
+                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("first fail");
                     isInputActive = false;
                 }
                 else if ((randomNumber == 1) && (Input.GetKeyDown("1") || Input.GetKeyDown("3") || Input.GetKeyDown("4")))
                 {
+                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("second fail");
                     isInputActive = false;
                 }
                 else if ((randomNumber == 2) && (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("4")))
                 {
+                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("third fail");
                     isInputActive = false;
                 }
                 else if ((randomNumber == 3) && (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3")))
                 {
+                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("fourth fail");
                     isInputActive = false;
                 }
                 else if (buttons[randomNumber].activeInHierarchy == true && ((randomNumber == 0 && Input.GetKeyDown("1")) || (randomNumber == 1 && Input.GetKeyDown("2")) || (randomNumber == 2 && Input.GetKeyDown("3")) || (randomNumber == 3 && Input.GetKeyDown("4"))))
                 {
+
                     // buttons[randomNumber].GetComponent<ParticleSystem>().Play();
                     particleSystemForSuccess.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX, randomY);
                     particleSystemForSuccess.Play();
@@ -66,6 +77,10 @@ public class QT_Event : MonoBehaviour
                     totalScore += fillAmount * 100;
                     scoreText.text = ((int)totalScore).ToString();
 
+                    numOfCorrectClicks++;
+                    Debug.Log("Num of correct clicks: " + numOfCorrectClicks);
+
+                    StartCoroutine(FadeOutAndDestroy(new Color(0, 223, 9, 255), ((int)(fillAmount * 100)).ToString()));
                     buttons[randomNumber].SetActive(false);
 
                     Debug.Log($"pressed {randomNumber + 1} successfully");
@@ -138,6 +153,7 @@ public class QT_Event : MonoBehaviour
             ActivateRandomly();
             isInputActive = true;
             Debug.Log("num is: " + randomNumber);
+            // StartCoroutine(FadeOutAndDestroy(new Color(0, 223, 9, 255), ((int)(fillAmount * 100)).ToString()));
             yield return new WaitForSeconds(speed);
             fillAmount = 1;
         }
@@ -150,8 +166,18 @@ public class QT_Event : MonoBehaviour
         yield return new WaitForSeconds(1f);
         scoreText.enabled = false;
         scoreTitle.enabled = false;
+
+        OpenGameOverPanel();
+    }
+
+    public void OpenGameOverPanel()
+    {
         gameOverPanel.SetActive(true);
         scoreInPanel.text = ((int)totalScore).ToString();
+
+        successRate = 100 * numOfCorrectClicks / totalNotes;
+        // string.Format("{0:F2}", successRate);    // shows only 2 digits after dot
+        successRateText.text = string.Format("{0:0.00}", successRate).ToString() + "%";
 
         if (totalScore >= 1000 && totalScore < 3000)
         {
@@ -170,6 +196,24 @@ public class QT_Event : MonoBehaviour
         }
 
         Debug.Log($"total score is: {(int)totalScore}");
+    }
 
+    IEnumerator FadeOutAndDestroy(Color buttonColor, string buttonText)     // Missed: FF6363 Success: 00DF09
+    {        
+        buttonScoreText.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX + 133, randomY);
+        buttonScoreText.color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, 255);
+        buttonScoreText.text = buttonText;
+        buttonScoreText.gameObject.SetActive(true);
+        
+        float startAlpha = 1;
+        float time = 0;
+
+        while (time < 2)
+        {
+            time += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 0, time / 2);
+            buttonScoreText.color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, alpha);
+            yield return null;
+        }
     }
 }
