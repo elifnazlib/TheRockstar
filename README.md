@@ -1,6 +1,6 @@
-# Missed Opportunity
+# The Rockstar
 
-A game developed for [Trijam #317](https://itch.io/jam/trijam-317). To play the game use [this itch.io link](https://elifnazlib.itch.io/the-rockstar).
+A rhythm game developed for [Trijam #317](https://itch.io/jam/trijam-317) with the theme "Missed Opportunity". To play the game use [this itch.io link](https://elifnazlib.itch.io/the-rockstar).
 
 <img src="https://github.com/elifnazlib/TheRockstar/blob/main/therockstar_gameplay.gif" width="515" />
 
