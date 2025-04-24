@@ -29,7 +29,8 @@ public class QT_Event : MonoBehaviour
     private float successRate = 0;
     [SerializeField] TextMeshProUGUI successRateText;
 
-    [SerializeField] TextMeshProUGUI buttonScoreText;
+    [SerializeField] TextMeshProUGUI[] buttonScoreText;
+    private string nthButtonScoreText = "first";
 
     void Start()
     {
@@ -45,30 +46,75 @@ public class QT_Event : MonoBehaviour
             {
                 if ((randomNumber == 0) && (Input.GetKeyDown("2") || Input.GetKeyDown("3") || Input.GetKeyDown("4")))
                 {
-                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
+                    if (nthButtonScoreText.Equals("first"))
+                    {
+                        nthButtonScoreText = "second";
+                        StartCoroutine(FadeOutAndDestroy1(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+                    else if (nthButtonScoreText.Equals("second"))
+                    {
+                        nthButtonScoreText = "first";
+                        StartCoroutine(FadeOutAndDestroy2(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+
+                    // StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("first fail");
                     isInputActive = false;
                 }
                 else if ((randomNumber == 1) && (Input.GetKeyDown("1") || Input.GetKeyDown("3") || Input.GetKeyDown("4")))
                 {
-                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
+                    if (nthButtonScoreText.Equals("first"))
+                    {
+                        nthButtonScoreText = "second";
+                        StartCoroutine(FadeOutAndDestroy1(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+                    else if (nthButtonScoreText.Equals("second"))
+                    {
+                        nthButtonScoreText = "first";
+                        StartCoroutine(FadeOutAndDestroy2(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+
+                    // StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("second fail");
                     isInputActive = false;
                 }
                 else if ((randomNumber == 2) && (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("4")))
                 {
-                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
+                    if (nthButtonScoreText.Equals("first"))
+                    {
+                        nthButtonScoreText = "second";
+                        StartCoroutine(FadeOutAndDestroy1(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+                    else if (nthButtonScoreText.Equals("second"))
+                    {
+                        nthButtonScoreText = "first";
+                        StartCoroutine(FadeOutAndDestroy2(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+
+                    // StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("third fail");
                     isInputActive = false;
                 }
                 else if ((randomNumber == 3) && (Input.GetKeyDown("1") || Input.GetKeyDown("2") || Input.GetKeyDown("3")))
                 {
-                    StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
+                    if (nthButtonScoreText.Equals("first"))
+                    {
+                        nthButtonScoreText = "second";
+                        StartCoroutine(FadeOutAndDestroy1(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+                    else if (nthButtonScoreText.Equals("second"))
+                    {
+                        nthButtonScoreText = "first";
+                        StartCoroutine(FadeOutAndDestroy2(new Color(255, 0, 0, 255), "Missed!"));
+                    }
+
+                    // StartCoroutine(FadeOutAndDestroy(new Color(255, 0, 0, 255), "Missed!"));
                     Debug.Log("fourth fail");
                     isInputActive = false;
                 }
                 else if (buttons[randomNumber].activeInHierarchy == true && ((randomNumber == 0 && Input.GetKeyDown("1")) || (randomNumber == 1 && Input.GetKeyDown("2")) || (randomNumber == 2 && Input.GetKeyDown("3")) || (randomNumber == 3 && Input.GetKeyDown("4"))))
                 {
+                    isInputActive = false;
 
                     // buttons[randomNumber].GetComponent<ParticleSystem>().Play();
                     particleSystemForSuccess.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX, randomY);
@@ -80,7 +126,18 @@ public class QT_Event : MonoBehaviour
                     numOfCorrectClicks++;
                     Debug.Log("Num of correct clicks: " + numOfCorrectClicks);
 
-                    StartCoroutine(FadeOutAndDestroy(new Color(0, 223, 9, 255), ((int)(fillAmount * 100)).ToString()));
+                    if (nthButtonScoreText.Equals("first"))
+                    {
+                        nthButtonScoreText = "second";
+                        StartCoroutine(FadeOutAndDestroy1(new Color(0, 223, 9, 255), ((int)(fillAmount * 100)).ToString()));
+                    }
+                    else if (nthButtonScoreText.Equals("second"))
+                    {
+                        nthButtonScoreText = "first";
+                        StartCoroutine(FadeOutAndDestroy2(new Color(0, 223, 9, 255), ((int)(fillAmount * 100)).ToString()));
+                    }
+
+                    // StartCoroutine(FadeOutAndDestroy(new Color(0, 223, 9, 255), ((int)(fillAmount * 100)).ToString()));
                     buttons[randomNumber].SetActive(false);
 
                     Debug.Log($"pressed {randomNumber + 1} successfully");
@@ -177,7 +234,7 @@ public class QT_Event : MonoBehaviour
 
         successRate = 100 * numOfCorrectClicks / totalNotes;
         // string.Format("{0:F2}", successRate);    // shows only 2 digits after dot
-        successRateText.text = string.Format("{0:0.00}", successRate).ToString() + "%";
+        successRateText.text = string.Format("{0:0.00}", successRate).ToString() + " %";
 
         if (totalScore >= 1000 && totalScore < 3000)
         {
@@ -198,13 +255,32 @@ public class QT_Event : MonoBehaviour
         Debug.Log($"total score is: {(int)totalScore}");
     }
 
-    IEnumerator FadeOutAndDestroy(Color buttonColor, string buttonText)     // Missed: FF6363 Success: 00DF09
-    {        
-        buttonScoreText.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX + 133, randomY);
-        buttonScoreText.color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, 255);
-        buttonScoreText.text = buttonText;
-        buttonScoreText.gameObject.SetActive(true);
-        
+    // IEnumerator FadeOutAndDestroy(Color buttonColor, string buttonText)     // Missed: FF6363 Success: 00DF09
+    // {
+    //     buttonScoreText.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX + 133, randomY);
+    //     buttonScoreText.color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, 255);
+    //     buttonScoreText.text = buttonText;
+    //     buttonScoreText.gameObject.SetActive(true);
+
+    //     float startAlpha = 1;
+    //     float time = 0;
+
+    //     while (time < 2)
+    //     {
+    //         time += Time.deltaTime;
+    //         float alpha = Mathf.Lerp(startAlpha, 0, time / 2);
+    //         buttonScoreText.color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, alpha);
+    //         yield return null;
+    //     }
+    // }
+
+    IEnumerator FadeOutAndDestroy1(Color buttonColor, string buttonText)     // Missed: FF6363 Success: 00DF09
+    {
+        buttonScoreText[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX + 200, randomY);
+        buttonScoreText[0].color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, 255);
+        buttonScoreText[0].text = buttonText;
+        buttonScoreText[0].gameObject.SetActive(true);
+
         float startAlpha = 1;
         float time = 0;
 
@@ -212,7 +288,26 @@ public class QT_Event : MonoBehaviour
         {
             time += Time.deltaTime;
             float alpha = Mathf.Lerp(startAlpha, 0, time / 2);
-            buttonScoreText.color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, alpha);
+            buttonScoreText[0].color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, alpha);
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeOutAndDestroy2(Color buttonColor, string buttonText)     // Missed: FF6363 Success: 00DF09
+    {
+        buttonScoreText[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX + 200, randomY);
+        buttonScoreText[1].color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, 255);
+        buttonScoreText[1].text = buttonText;
+        buttonScoreText[1].gameObject.SetActive(true);
+
+        float startAlpha = 1;
+        float time = 0;
+
+        while (time < 2)
+        {
+            time += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 0, time / 2);
+            buttonScoreText[1].color = new Color(buttonColor.r, buttonColor.g, buttonColor.b, alpha);
             yield return null;
         }
     }
